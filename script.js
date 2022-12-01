@@ -15,30 +15,37 @@ let servicePercentPrice = fullPrice - (fullPrice * (rollback / 100));
 
 let allServicePrices;
 
+
 const showTypeOf = function(variable) {
     console.log(variable, typeof variable);
 };
 
 
-const getServicePercentPrices = function() {
-    return servicePercentPrice = fullPrice - (fullPrice * (rollback / 100));
-};
+// Функция возвращает title меняя его таким образом: первый символ с большой буквы, остальные с маленькой"
+const getTitle = function (titleProject) {
+    let newTitle = titleProject.trim();
 
-const getTitle = function (title) {
-    let newTitle = title.trim();
-
-    return newTitle = newTitle[0].toUpperCase() + newTitle.substring(1).toLowerCase();   
+    return newTitle[0].toUpperCase() + newTitle.substring(1).toLowerCase();
 };
 
 
+// Функция возвращает сумму всех дополнительных услуг
+const getAllServicePrices = function() {
+    return allServicePrices = servicePrice1 + servicePrice2;
+ };
+
+// Функция возвращает сумму стоимости верстки и стоимости дополнительных услуг
 // function declaration
 function getFullPrice() {
     return fullPrice = screenPrice + allServicePrices;
 }
 
-const getAllServicePrices = function() {
-   return allServicePrices = servicePrice1 + servicePrice2;
+// Функция возвращает сумму стоимости верстки и стоимости дополнительных услуг
+const getServicePercentPrices = function() {
+    return servicePercentPrice = fullPrice - (fullPrice * (rollback / 100));
 };
+
+
 
 const getRollbackMessage = function(price) {
     if(price >= 30000) {
@@ -60,12 +67,11 @@ showTypeOf(adaptive);
 
 console.log( getTitle(title) );
 
-console.log( getRollbackMessage(fullPrice) );
 console.log( getAllServicePrices() );
 console.log( getFullPrice() );
 
 console.log( getServicePercentPrices() );
-
+console.log( getRollbackMessage(fullPrice) );
 
 
 
