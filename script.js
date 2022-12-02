@@ -22,14 +22,10 @@ const asking = function() {
     title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
     screens = prompt('Какие типы экранов нужно разработать?', 'Порстые, Сложные');
     
-    screenPrice = prompt('Сколько будет стоить данная работа?');
-
-    alert(screenPrice);
-
-    while(!isNumber(screenPrice)) {
+    do {
         screenPrice = prompt('Сколько будет стоить данная работа?');
-        alert(screenPrice);
-    }
+    } while(!isNumber(screenPrice));
+    
 
     adaptive = confirm('Нужен ли адаптив на сайте?');
 };
@@ -40,6 +36,7 @@ const getAllServicePrices = function() {
     let sum = 0;
 
     for(let i = 0; i < 2; i++) {
+        let price = 0;
 
         if(i === 0) {
             let service1 = prompt('Какой дополнительный тип услуги нужен?');
@@ -47,12 +44,18 @@ const getAllServicePrices = function() {
             let service2 = prompt('Какой дополнительный тип услуги нужен?');
         }
 
-        sum += +prompt('Сколько это будет стоить?');
+        do{
+            price = prompt('Сколько это будет стоить?');
+        } while(!isNumber(price));
+
+        
+        sum += +price;
+
+        // sum += +prompt('Сколько это будет стоить?');
         // sum = sum + +prompt('Сколько это будет стоить?');
     }
     
     return sum;
-    // return servicePrice1 + servicePrice2;
  };
 
 
@@ -63,7 +66,7 @@ const showTypeOf = function(variable) {
 
 // Функция возвращает сумму стоимости верстки и стоимости дополнительных услуг
 const getFullPrice = function () {
-    return screenPrice + allServicePrices;
+    return +screenPrice + allServicePrices;
 };
 
 
