@@ -51,9 +51,7 @@ const appData = {
     
             
             sum += +price;
-    
-            // sum += +prompt('Сколько это будет стоить?');
-            // sum = sum + +prompt('Сколько это будет стоить?');
+
         }
         
         return sum;
@@ -67,7 +65,7 @@ const appData = {
     },
     
     
-    // Функция возвращает сумму стоимости верстки и стоимости дополнительных услуг
+    // Метод возвращает сумму стоимости верстки и стоимости дополнительных услуг
     getServicePercentPrices: function() {
         return appData.fullPrice - (appData.fullPrice * (appData.rollback / 100));
     },
