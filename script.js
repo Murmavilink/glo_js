@@ -26,13 +26,25 @@ const appData = {
         return !isNaN( parseFloat(num) ) && isFinite(num);
     },
 
+    isString: function(str) {
+        // return typeof str === 'string' && typeof +str === 'number';
+        return isNaN(str);
+    },
+
     asking: function() {
-        appData.title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
+    
+        do {
+            appData.title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
+        } while(!appData.isString(appData.title));
 
 
         for(let i = 0; i < 2; i++) {
-            let name = prompt('Какие типы экранов нужно разработать?');
+            let name;
             let price = 0;
+
+            do {
+                name = prompt('Какие типы экранов нужно разработать?');
+            } while(!appData.isString(name));
 
             do {
                 price = prompt('Сколько будет стоить данная работа?');
@@ -47,9 +59,13 @@ const appData = {
 
 
         for(let i = 0; i < 2; i++) {
-            let name = prompt('Какой дополнительный тип услуги нужен?');
+            let name;
             let price = 0;
-    
+
+            do {
+                name = prompt('Какой дополнительный тип услуги нужен?');
+            } while(!appData.isString(name));
+            
             do{
                 price = prompt('Сколько это будет стоить?');
             } while(!appData.isNumber(price));
