@@ -13,6 +13,21 @@ const appData = {
     service1: '',
     service2: '',
 
+    start: function() {
+        appData.asking();
+
+        appData.allServicePrices = appData.getAllServicePrices();
+        appData.fullPrice = appData.getFullPrice();
+        appData.servicePercentPrice = appData.getServicePercentPrices();
+        appData.title = appData.getTitle();
+
+        appData.logger();
+    },
+
+    isNumber: function(num) {
+        return !isNaN( parseFloat(num) ) && isFinite(num);
+    },
+
     asking: function() {
         appData.title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
         appData.screens = prompt('Какие типы экранов нужно разработать?', 'Порстые, Сложные');
@@ -25,12 +40,6 @@ const appData = {
         appData.adaptive = confirm('Нужен ли адаптив на сайте?');
     },
 
-
-    isNumber: function(num) {
-        return !isNaN( parseFloat(num) ) && isFinite(num);
-    },
-    
-    
     
     // Метод возвращает сумму всех дополнительных услуг
     getAllServicePrices: function() {
@@ -77,7 +86,6 @@ const appData = {
     },
     
     
-    
     getRollbackMessage: function(price) {
         if(price >= 30000) {
             return 'Даем скидку в 10%';
@@ -91,22 +99,11 @@ const appData = {
     },
 
     logger: function() {
-        
-        for(const key in appData) {
-            console.log(key, appData[key]);
-        }
-
-    },
-
-    start: function() {
-        appData.asking();
-
-        appData.allServicePrices = appData.getAllServicePrices();
-        appData.fullPrice = appData.getFullPrice();
-        appData.servicePercentPrice = appData.getServicePercentPrices();
-        appData.title = appData.getTitle();
-
-        appData.logger();
+        console.log(appData.fullPrice);
+        console.log(appData.servicePercentPrice);
+        // for(const key in appData) {
+        //     console.log(key, appData[key]);
+        // }
     },
 
 };
