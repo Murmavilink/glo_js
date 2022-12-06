@@ -28,11 +28,6 @@ const appData = {
 
     asking: function() {
         appData.title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
-        // appData.screens = prompt('Какие типы экранов нужно разработать?', 'Порстые, Сложные');
-        
-        // do {
-        //     appData.screenPrice = prompt('Сколько будет стоить данная работа?');
-        // } while(!appData.isNumber(appData.screenPrice));
 
 
         for(let i = 0; i < 2; i++) {
@@ -110,6 +105,7 @@ const appData = {
         console.log(appData.fullPrice);
         console.log(appData.servicePercentPrice);
         console.log(appData.screens);
+        console.log(appData.services); 
         // for(const key in appData) {
         //     console.log(key, appData[key]);
         // }
