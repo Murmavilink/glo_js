@@ -70,16 +70,17 @@ const appData = {
                 price = prompt('Сколько это будет стоить?');
             } while(!appData.isNumber(price));
 
-            appData.services[name] = +price;
+            appData.services[name + i] = +price;
         }
 
         appData.adaptive = confirm('Нужен ли адаптив на сайте?');
     },
 
     addPrices: function() {
-        for (const screen of appData.screens) {
-            appData.screenPrice += +screen.price;
-        }
+        appData.screenPrice = appData.screens.reduce(function(sum, number) {
+            return sum += +number.price;          
+        }, 0);
+
 
         for(let key in appData.services) {
             appData.allServicePrices += appData.services[key];
@@ -119,12 +120,10 @@ const appData = {
 
     logger: function() {
         console.log(appData.fullPrice);
+        console.log('appData.screenPrice', appData.screenPrice);
         console.log(appData.servicePercentPrice);
         console.log(appData.screens);
         console.log(appData.services); 
-        // for(const key in appData) {
-        //     console.log(key, appData[key]);
-        // }
     },
 
 };
