@@ -130,34 +130,7 @@ const appData = {
 
 
 
-appData.start();
-
-
-
-
-
-
-// console.log(appData.fullPrice);
-// console.log(appData.servicePercentPrice);
-
-// console.log('////////////////////////////////////////');
-// console.log(title);
-// console.log('allServicePrices', allServicePrices); 
-// console.log('fullPrice', fullPrice); 
-// console.log('servicePercentPrice', servicePercentPrice); 
-
-
-// console.log(getRollbackMessage(fullPrice));
-// console.log(typeof title);
-// console.log(typeof screenPrice);
-// console.log(typeof adaptive);
-
-// console.log(screens.length);
-// console.log(servicePercentPrice);
-
-
-// console.log("Стоимость верстки экранов " + screenPrice + " тенге и Стоимость разработки сайта " + fullPrice + " тенге");
-
+// appData.start();
 
 
 
