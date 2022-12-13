@@ -2,8 +2,8 @@
 
 const title = document.getElementsByTagName('h1')[0];
 const buttonPlus = document.querySelector('.screen-btn');
-const otherItemsPercent = document.querySelectorAll('.other-items.percent')
-const otherItemsNumber = document.querySelectorAll('.other-items.number')
+const otherItemsPercent = document.querySelectorAll('.other-items.percent');
+const otherItemsNumber = document.querySelectorAll('.other-items.number');
 
 const inputRange = document.querySelector('.rollback input');
 const inputRangeValue = document.querySelector('.rollback .range-value');
@@ -19,110 +19,125 @@ const totalCountRollback = document.getElementsByClassName('total-input')[4];
 
 let screens = document.querySelectorAll('.screen');
 
-
-
 const appData = {
     title: '',
     screens: [],
     screenPrice: 0, 
     adaptive: true,
     rollback: 10,
-    allServicePrices: 0,
+    servicePricesPercent: 0,
+    servicePricesNumber: 0,
     fullPrice: 0,
     servicePercentPrice: 0,
-    services: {},
+    servicesPercent: {},
+    servicesNumber: {},
+    
+    init: function () {
+        appData.addTitle();
+        startBtn.addEventListener('click', appData.start);
+        buttonPlus.addEventListener('click', appData.addScreenBlock);
+    },
+    
+    addTitle: function () {
+        document.title = title.textContent;
+    },
 
     start: function() {
-        appData.asking();
+        appData.addScreens();
+        appData.addServices();
         appData.addPrices();
-        appData.getFullPrice();
-        appData.getServicePercentPrices();
-        appData.getTitle();
+        // appData.getServicePercentPrices();
 
-        appData.logger();
+        // appData.logger();
+        console.log(appData);
+        appData.showResult();
     },
-
-    isNumber: function(num) {
-        return !isNaN( parseFloat(num) ) && isFinite(num);
-    },
-
-    isString: function(str) {
-        // return typeof str === 'string' && typeof +str === 'number';
-        return isNaN(str);
-    },
-
-    asking: function() {
     
-        do {
-            appData.title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
-        } while(!appData.isString(appData.title));
+    showResult: function() {
+        console.log('showResult');
+        total.value = appData.screenPrice;
+        totalCountOther.value = appData.servicePricesPercent + appData.servicePricesNumber;
+        fullTotalCount.value = appData.fullPrice;
+    },
 
+    addScreens: function() {
+        screens = document.querySelectorAll('.screen');
 
-        for(let i = 0; i < 2; i++) {
-            let name;
-            let price = 0;
-
-            do {
-                name = prompt('Какие типы экранов нужно разработать?');
-            } while(!appData.isString(name));
-
-            do {
-                price = prompt('Сколько будет стоить данная работа?');
-            } while(!appData.isNumber(price));
+        screens.forEach(function(screen, index) {
+            const select = screen.querySelector('select'); 
+            const input = screen.querySelector('input');
+            const selectName = select.options[select.selectedIndex].textContent;
 
             appData.screens.push({
-                id: i,
-                name: name,
-                price: price
+                id: index,
+                name: selectName,
+                price: +select.value * +input.value
             });
-        }
-
-
-        for(let i = 0; i < 2; i++) {
-            let name;
-            let price = 0;
-
-            do {
-                name = prompt('Какой дополнительный тип услуги нужен?');
-            } while(!appData.isString(name));
             
-            do{
-                price = prompt('Сколько это будет стоить?');
-            } while(!appData.isNumber(price));
+        });
 
-            appData.services[name + i] = +price;
-        }
-
-        appData.adaptive = confirm('Нужен ли адаптив на сайте?');
+        // console.log(appData.screens);
     },
+
+    addServices: function() {
+        otherItemsPercent.forEach(function(item) {
+            const check = item.querySelector('input[type=checkbox]');
+            const label = item.querySelector('label');
+            const input = item.querySelector('input[type=text]');
+
+            console.log(check);
+            console.log(label);
+            console.log(input);
+
+            if(check.checked) {
+                appData.servicesPercent[label.textContent] = +input.value;
+            }
+              
+        });
+
+        otherItemsNumber.forEach(function(item) {
+            const check = item.querySelector('input[type=checkbox]');
+            const label = item.querySelector('label');
+            const input = item.querySelector('input[type=text]');
+
+            console.log(check);
+            console.log(label);
+            console.log(input);
+
+            if(check.checked) {
+                appData.servicesNumber[label.textContent] = +input.value;
+            }
+              
+        });
+    },
+
+    addScreenBlock: function() {
+        const cloneScreen = screens[0].cloneNode(true);
+
+        screens[screens.length - 1].after(cloneScreen);
+    },
+
 
     addPrices: function() {
-        appData.screenPrice = appData.screens.reduce(function(sum, number) {
-            return sum += +number.price;          
+        appData.screenPrice = appData.screens.reduce(function(sum, item) {
+            return sum += +item.price;          
         }, 0);
 
-
-        for(let key in appData.services) {
-            appData.allServicePrices += appData.services[key];
+        for(let key in appData.servicesNumber) {
+            appData.servicePricesNumber += appData.servicesNumber[key];
         }
+
+        for(let key in appData.servicesPercent) {
+            appData.servicePricesPercent += appData.screenPrice * (appData.servicesPercent[key] / 100);
+        }
+
+        appData.fullPrice = +appData.screenPrice + appData.servicePricesNumber + appData.servicePricesPercent;
     },
     
     
-    // Метод возвращает сумму стоимости верстки и стоимости дополнительных услуг
-    getFullPrice: function () {
-        appData.fullPrice = +appData.screenPrice + appData.allServicePrices;
-    },
-    
-    
-    // Метод возвращает сумму стоимости верстки и стоимости дополнительных услуг
+    // Метод добавляет сумму стоимости верстки и стоимости дополнительных услуг
     getServicePercentPrices: function() {
         appData.servicePercentPrice = appData.fullPrice - (appData.fullPrice * (appData.rollback / 100));
-    },
-    
-    
-    // Метод возвращает title меняя его таким образом: первый символ с большой буквы, остальные с маленькой"
-    getTitle: function () {
-        appData.title = appData.title.trim()[0].toUpperCase() + appData.title.trim().substring(1).toLowerCase();
     },
     
     
@@ -150,7 +165,7 @@ const appData = {
 
 
 
-// appData.start();
+appData.init();
 
 
 
