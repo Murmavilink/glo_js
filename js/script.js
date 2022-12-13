@@ -31,9 +31,11 @@ const appData = {
     servicePercentPrice: 0,
     servicesPercent: {},
     servicesNumber: {},
+    countScreens: 0,
     
     init: function () {
         appData.addTitle();
+        appData.changeRange();
         startBtn.addEventListener('click', appData.start);
         buttonPlus.addEventListener('click', appData.addScreenBlock);
     },
@@ -58,6 +60,8 @@ const appData = {
         total.value = appData.screenPrice;
         totalCountOther.value = appData.servicePricesPercent + appData.servicePricesNumber;
         fullTotalCount.value = appData.fullPrice;
+        totalCountRollback.value = appData.servicePercentPrice;
+        totalCount.value = appData.countScreens;
     },
 
     addScreens: function() {
@@ -71,7 +75,8 @@ const appData = {
             appData.screens.push({
                 id: index,
                 name: selectName,
-                price: +select.value * +input.value
+                price: +select.value * +input.value,
+                count: +input.value
             });
             
         });
@@ -85,10 +90,6 @@ const appData = {
             const label = item.querySelector('label');
             const input = item.querySelector('input[type=text]');
 
-            console.log(check);
-            console.log(label);
-            console.log(input);
-
             if(check.checked) {
                 appData.servicesPercent[label.textContent] = +input.value;
             }
@@ -99,10 +100,6 @@ const appData = {
             const check = item.querySelector('input[type=checkbox]');
             const label = item.querySelector('label');
             const input = item.querySelector('input[type=text]');
-
-            console.log(check);
-            console.log(label);
-            console.log(input);
 
             if(check.checked) {
                 appData.servicesNumber[label.textContent] = +input.value;
@@ -117,11 +114,27 @@ const appData = {
         screens[screens.length - 1].after(cloneScreen);
     },
 
+    changeRange: function () {
+        inputRange.addEventListener('input', function() {
+            appData.rollback = inputRange.value;
+            inputRangeValue.textContent = inputRange.value + '%';
+        });
+    },
 
     addPrices: function() {
-        appData.screenPrice = appData.screens.reduce(function(sum, item) {
-            return sum += +item.price;          
-        }, 0);
+        // appData.screenPrice = appData.screens.reduce(function(sum, item) {
+        //     return sum += +item.price;          
+        // }, 0);
+
+
+        // appData.screenPrice = appData.screens.reduce(function(sum, item) {
+        //     return sum += +item.price;          
+        // }, 0);
+
+        appData.screens.forEach(function(item) {
+            appData.screenPrice += item.price;
+            appData.countScreens += item.count;
+        });
 
         for(let key in appData.servicesNumber) {
             appData.servicePricesNumber += appData.servicesNumber[key];
@@ -129,37 +142,23 @@ const appData = {
 
         for(let key in appData.servicesPercent) {
             appData.servicePricesPercent += appData.screenPrice * (appData.servicesPercent[key] / 100);
+            // console.log(appData.screenPrice);
+            // console.log(appData.servicesPercent[key]);
         }
 
         appData.fullPrice = +appData.screenPrice + appData.servicePricesNumber + appData.servicePricesPercent;
-    },
-    
-    
-    // Метод добавляет сумму стоимости верстки и стоимости дополнительных услуг
-    getServicePercentPrices: function() {
+
         appData.servicePercentPrice = appData.fullPrice - (appData.fullPrice * (appData.rollback / 100));
     },
     
-    
-    getRollbackMessage: function(price) {
-        if(price >= 30000) {
-            return 'Даем скидку в 10%';
-        } else if(price >= 15000 && price < 30000) {
-            return 'Даем скидку в 5%';
-        } else if (price < 15000 && price >= 0) {
-            return "Скидка не предусмотрена";
-        } else {
-            return 'Что то пошло не так';
-        }
-    },
 
-    logger: function() {
-        console.log(appData.fullPrice);
-        console.log('appData.screenPrice', appData.screenPrice);
-        console.log(appData.servicePercentPrice);
-        console.log(appData.screens);
-        console.log(appData.services); 
-    },
+    // logger: function() {
+    //     console.log(appData.fullPrice);
+    //     console.log('appData.screenPrice', appData.screenPrice);
+    //     console.log(appData.servicePercentPrice);
+    //     console.log(appData.screens);
+    //     console.log(appData.services); 
+    // },
 
 };
 
