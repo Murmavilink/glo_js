@@ -32,6 +32,7 @@ const appData = {
     servicesPercent: {},
     servicesNumber: {},
     countScreens: 0,
+    isBlocked: true,
     
     init: function () {
         appData.addTitle();
@@ -45,23 +46,39 @@ const appData = {
     },
 
     start: function() {
-        appData.addScreens();
-        appData.addServices();
-        appData.addPrices();
-        // appData.getServicePercentPrices();
+   
+        appData.screenCheck();
+        if (!appData.isBlocked) {
+            appData.addScreens();
+            appData.addServices();
+            appData.addPrices();
+            appData.showResult();
 
-        // appData.logger();
-        console.log(appData);
-        appData.showResult();
+            console.log(appData);
+          } else {
+            alert('Выберите тип экрана и заполните все поля');
+          }
+       
     },
     
     showResult: function() {
-        console.log('showResult');
         total.value = appData.screenPrice;
         totalCountOther.value = appData.servicePricesPercent + appData.servicePricesNumber;
         fullTotalCount.value = appData.fullPrice;
         totalCountRollback.value = appData.servicePercentPrice;
         totalCount.value = appData.countScreens;
+    },
+
+    screenCheck: function() {
+        screens = document.querySelectorAll('.screen');
+
+        screens.forEach(function(screen) {
+            const select = screen.querySelector('select'); 
+            const input = screen.querySelector('input');
+
+            appData.isBlocked = (select.value && input.value) ? false : true;
+        });
+
     },
 
     addScreens: function() {
@@ -80,8 +97,6 @@ const appData = {
             });
             
         });
-
-        // console.log(appData.screens);
     },
 
     addServices: function() {
@@ -122,14 +137,6 @@ const appData = {
     },
 
     addPrices: function() {
-        // appData.screenPrice = appData.screens.reduce(function(sum, item) {
-        //     return sum += +item.price;          
-        // }, 0);
-
-
-        // appData.screenPrice = appData.screens.reduce(function(sum, item) {
-        //     return sum += +item.price;          
-        // }, 0);
 
         appData.screens.forEach(function(item) {
             appData.screenPrice += item.price;
@@ -142,8 +149,6 @@ const appData = {
 
         for(let key in appData.servicesPercent) {
             appData.servicePricesPercent += appData.screenPrice * (appData.servicesPercent[key] / 100);
-            // console.log(appData.screenPrice);
-            // console.log(appData.servicesPercent[key]);
         }
 
         appData.fullPrice = +appData.screenPrice + appData.servicePricesNumber + appData.servicePricesPercent;
