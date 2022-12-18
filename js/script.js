@@ -36,8 +36,9 @@ const appData = {
     
     init: function () {
         this.addTitle();
-        this.changeRange();
         startBtn.addEventListener('click', this.start.bind(this));
+        resetBtn.addEventListener('click', this.reset.bind(this));
+        inputRange.addEventListener('input', this.setRollback.bind(this));
         buttonPlus.addEventListener('click', this.addScreenBlock);
 
         // console.log(this);
@@ -50,7 +51,6 @@ const appData = {
     },
 
     start: function() {
-        // console.log(this);
 
         this.screenCheck();
 
@@ -59,10 +59,19 @@ const appData = {
             this.addServices();
             this.addPrices();
             this.showResult();
+            this.disabledAll();
+
+            this.addNoneBlock(startBtn, resetBtn);
           } else {
             alert('Выберите тип экрана и заполните все поля');
           }
-       
+          
+          
+    },
+
+    reset: function() {
+        // console.log('reset');
+        this.addNoneBlock(resetBtn, startBtn);
     },
     
     showResult: function() {
@@ -71,6 +80,11 @@ const appData = {
         fullTotalCount.value = this.fullPrice;
         totalCountRollback.value = this.servicePercentPrice;
         totalCount.value = this.countScreens;
+    },
+
+    addNoneBlock: function(btn1, btn2) {
+        btn1.style.display = 'none';
+        btn2.style.display = 'block';
     },
 
     screenCheck: function() {
@@ -133,11 +147,9 @@ const appData = {
         screens[screens.length - 1].after(cloneScreen);
     },
 
-    changeRange: function () {
-        inputRange.addEventListener('input', function() {
-            this.rollback = inputRange.value;
-            inputRangeValue.textContent = inputRange.value + '%';
-        });
+    setRollback: function () {
+        this.rollback = inputRange.value;
+        inputRangeValue.textContent = inputRange.value + '%';
     },
 
     addPrices: function() {
@@ -160,6 +172,18 @@ const appData = {
         this.servicePercentPrice = this.fullPrice - (this.fullPrice * (this.rollback / 100));
     },
     
+    disabledAll: function() {
+        const mainControls = document.querySelector('.main-controls');
+        const inputList = mainControls.querySelectorAll('input[type=text]');
+        const selectList = mainControls.querySelectorAll('select');
+        const checkboxList = mainControls.querySelectorAll('input[type=checkbox]');
+        inputList.forEach(input => input.disabled = true);
+        selectList.forEach(select => select.disabled = true);
+        checkboxList.forEach(checkbox => checkbox.disabled = true);
+
+        buttonPlus.disabled = true;
+        inputRange.disabled = true;
+    },
 
     logger: () => {
         console.log(appData.fullPrice);
