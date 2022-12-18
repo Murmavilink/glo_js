@@ -72,7 +72,7 @@ const appData = {
     screenCheck: function() {
         screens = document.querySelectorAll('.screen');
 
-        screens.forEach(function(screen) {
+        screens.forEach(screen => {
             const select = screen.querySelector('select'); 
             const input = screen.querySelector('input');
 
@@ -84,7 +84,7 @@ const appData = {
     addScreens: function() {
         screens = document.querySelectorAll('.screen');
 
-        screens.forEach(function(screen, index) {
+        screens.forEach((screen, index) => {
             const select = screen.querySelector('select'); 
             const input = screen.querySelector('input');
             const selectName = select.options[select.selectedIndex].textContent;
@@ -100,7 +100,7 @@ const appData = {
     },
 
     addServices: function() {
-        otherItemsPercent.forEach(function(item) {
+        otherItemsPercent.forEach(item => {
             const check = item.querySelector('input[type=checkbox]');
             const label = item.querySelector('label');
             const input = item.querySelector('input[type=text]');
@@ -111,7 +111,7 @@ const appData = {
               
         });
 
-        otherItemsNumber.forEach(function(item) {
+        otherItemsNumber.forEach(item => {
             const check = item.querySelector('input[type=checkbox]');
             const label = item.querySelector('label');
             const input = item.querySelector('input[type=text]');
@@ -138,7 +138,7 @@ const appData = {
 
     addPrices: function() {
 
-        appData.screens.forEach(function(item) {
+        appData.screens.forEach(item => {
             appData.screenPrice += item.price;
             appData.countScreens += item.count;
         });
@@ -157,13 +157,13 @@ const appData = {
     },
     
 
-    // logger: function() {
-    //     console.log(appData.fullPrice);
-    //     console.log('appData.screenPrice', appData.screenPrice);
-    //     console.log(appData.servicePercentPrice);
-    //     console.log(appData.screens);
-    //     console.log(appData.services); 
-    // },
+    logger: () => {
+        console.log(appData.fullPrice);
+        console.log('appData.screenPrice', appData.screenPrice);
+        console.log(appData.servicePercentPrice);
+        console.log(appData.screens);
+        console.log(appData.services); 
+    },
 
 };
 
