@@ -1,7 +1,6 @@
 'use strict';
 
 const title = document.getElementsByTagName('h1')[0];
-const buttonPlus = document.querySelector('.screen-btn');
 const otherItemsPercent = document.querySelectorAll('.other-items.percent');
 const otherItemsNumber = document.querySelectorAll('.other-items.number');
 
@@ -17,6 +16,8 @@ const totalCountOther = document.getElementsByClassName('total-input')[2];
 const fullTotalCount = document.getElementsByClassName('total-input')[3];
 const totalCountRollback = document.getElementsByClassName('total-input')[4];
 
+
+let buttonPlus = document.querySelector('.screen-btn');
 let screens = document.querySelectorAll('.screen');
 
 const appData = {
@@ -39,11 +40,9 @@ const appData = {
         startBtn.addEventListener('click', this.start.bind(this));
         resetBtn.addEventListener('click', this.reset.bind(this));
         inputRange.addEventListener('input', this.setRollback.bind(this));
-        buttonPlus.addEventListener('click', this.addScreenBlock);
 
-        // console.log(this);
-        // console.log(this.start());
-        // console.log(this.start.bind(this));
+        buttonPlus = document.querySelector('.screen-btn');
+        buttonPlus.addEventListener('click', this.addScreenBlock);
     },
     
     addTitle: function () {
@@ -51,7 +50,6 @@ const appData = {
     },
 
     start: function() {
-
         this.screenCheck();
 
         if (!this.isBlocked) {
@@ -65,13 +63,74 @@ const appData = {
           } else {
             alert('Выберите тип экрана и заполните все поля');
           }
-          
-          
     },
 
-    reset: function() {
-        // console.log('reset');
+    reset: function() {        
+        this.resetData();
+        this.resetForm();
         this.addNoneBlock(resetBtn, startBtn);
+
+
+        // buttonPlus = document.querySelector('.screen-btn');
+        // console.log(buttonPlus);
+        // buttonPlus.addEventListener('click', this.addScreenBlock);
+        this.init();
+        // console.log(this);
+    },
+
+    resetData: function() {
+        this.screens = [],
+        this.screenPrice = 0, 
+        this.adaptive = true,
+        this.rollback = 10,
+        this.screenPrice = 0,
+        this.servicePricesNumber = 0,
+        this.fullPrice = 0,
+        this.servicePercentPrice = 0,
+        this.servicesPercent = {},
+        this.servicesNumber = {},
+        this.countScreens = 0,
+        this.isBlocked = true,
+
+        total.value = this.screenPrice;
+        totalCountOther.value = this.servicePricesPercent + this.servicePricesNumber;
+        fullTotalCount.value = this.fullPrice;
+        totalCountRollback.value = this.servicePercentPrice;
+        totalCount.value = this.countScreens;
+    },
+
+    resetForm: function() {
+        const mainControls = document.querySelector('.main-controls');
+        const screenWrapper = mainControls.querySelector('.main-controls__views.element');
+        const checkboxList = mainControls.querySelectorAll('input[type=checkbox]');
+
+        screenWrapper.innerHTML = `<h3>Расчет по типу экрана</h3>
+                                  <div class="main-controls__item screen">
+                                      <div class="main-controls__select">
+                                          <select name="views-select">
+                                              <option value="" selected>Тип экранов</option>
+                                              <option value="500">Простых 500руб * n</option>
+                                              <option value="700">Сложных 700руб * n</option>
+                                              <option value="800">Интерактивных 800руб * n</option>
+                                              <option value="100">Форм 100руб * n</option>
+                                              <option value="300">Слайдеров 300руб * n</option>
+                                              <option value="200">Модальные окна 200руб * n</option>
+                                              <option value="100">Анимация в блоках 100руб * n</option>
+                                          </select>
+                                      </div>
+                                      <div class="main-controls__input">
+                                          <input type="text" placeholder="Количество экранов">
+                                      </div>
+                                  </div>
+                                  <button class="screen-btn">+</button>`;
+
+        checkboxList.forEach(checkbox => {
+          checkbox.disabled = false;
+          checkbox.checked = false;
+        });
+
+        buttonPlus.disabled = false;
+
     },
     
     showResult: function() {
@@ -142,6 +201,10 @@ const appData = {
     },
 
     addScreenBlock: function() {
+        screens = document.querySelectorAll('.screen');
+        console.log('addScreenBlock');
+        console.log(screens[0]);
+        console.log(screens);
         const cloneScreen = screens[0].cloneNode(true);
 
         screens[screens.length - 1].after(cloneScreen);
@@ -198,7 +261,6 @@ const appData = {
 
 
 appData.init();
-
 
 
 
