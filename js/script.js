@@ -4,8 +4,8 @@ const title = document.getElementsByTagName('h1')[0];
 const otherItemsPercent = document.querySelectorAll('.other-items.percent');
 const otherItemsNumber = document.querySelectorAll('.other-items.number');
 
-const inputRange = document.querySelector('.rollback input');
-const inputRangeValue = document.querySelector('.rollback .range-value');
+let inputRange = document.querySelector('.rollback input');
+let inputRangeValue = document.querySelector('.rollback .range-value');
 
 const startBtn = document.getElementsByClassName('handler_btn')[0];
 const resetBtn = document.getElementsByClassName('handler_btn')[1];
@@ -39,10 +39,8 @@ const appData = {
         this.addTitle();
         startBtn.addEventListener('click', this.start.bind(this));
         resetBtn.addEventListener('click', this.reset.bind(this));
-        inputRange.addEventListener('input', this.setRollback.bind(this));
-
-        buttonPlus = document.querySelector('.screen-btn');
-        buttonPlus.addEventListener('click', this.addScreenBlock);
+        
+        this.eventListener();
     },
     
     addTitle: function () {
@@ -65,17 +63,19 @@ const appData = {
           }
     },
 
-    reset: function() {        
+    eventListener: function() {
+        buttonPlus = document.querySelector('.screen-btn');
+        buttonPlus.addEventListener('click', this.addScreenBlock.bind(this));
+
+        // inputRange = document.querySelector('.rollback input');
+        inputRange.addEventListener('input', this.setRollback.bind(this));
+    },
+
+    reset: function() {
         this.resetData();
         this.resetForm();
         this.addNoneBlock(resetBtn, startBtn);
-
-
-        // buttonPlus = document.querySelector('.screen-btn');
-        // console.log(buttonPlus);
-        // buttonPlus.addEventListener('click', this.addScreenBlock);
-        this.init();
-        // console.log(this);
+        this.eventListener();
     },
 
     resetData: function() {
@@ -97,6 +97,8 @@ const appData = {
         fullTotalCount.value = this.fullPrice;
         totalCountRollback.value = this.servicePercentPrice;
         totalCount.value = this.countScreens;
+        
+        inputRangeValue.textContent = 0 + '%';
     },
 
     resetForm: function() {
@@ -130,7 +132,7 @@ const appData = {
         });
 
         buttonPlus.disabled = false;
-
+        inputRange.disabled = false;
     },
     
     showResult: function() {
@@ -141,14 +143,21 @@ const appData = {
         totalCount.value = this.countScreens;
     },
 
+    // Метод addNoneBlock добавляет none или block в свойство display
     addNoneBlock: function(btn1, btn2) {
         btn1.style.display = 'none';
         btn2.style.display = 'block';
     },
 
-    screenCheck: function() {
-        screens = document.querySelectorAll('.screen');
+    // Метод newSearchElements новый поиск элементов 
+    // newSearchElements: function() {
+    //     screens = document.querySelectorAll('.screen');
+    // },
 
+    screenCheck: function() {
+        // this.newSearchElements();
+        screens = document.querySelectorAll('.screen');
+        
         screens.forEach(screen => {
             const select = screen.querySelector('select'); 
             const input = screen.querySelector('input');
@@ -159,6 +168,7 @@ const appData = {
     },
 
     addScreens: function() {
+        // this.newSearchElements();
         screens = document.querySelectorAll('.screen');
 
         screens.forEach((screen, index) => {
@@ -201,16 +211,18 @@ const appData = {
     },
 
     addScreenBlock: function() {
+        // this.newSearchElements();
         screens = document.querySelectorAll('.screen');
+
         console.log('addScreenBlock');
-        console.log(screens[0]);
-        console.log(screens);
         const cloneScreen = screens[0].cloneNode(true);
 
         screens[screens.length - 1].after(cloneScreen);
     },
 
     setRollback: function () {
+        // inputRange = document.querySelector('.rollback input');
+
         this.rollback = inputRange.value;
         inputRangeValue.textContent = inputRange.value + '%';
     },
@@ -249,11 +261,11 @@ const appData = {
     },
 
     logger: () => {
-        console.log(appData.fullPrice);
-        console.log('appData.screenPrice', appData.screenPrice);
-        console.log(appData.servicePercentPrice);
-        console.log(appData.screens);
-        console.log(appData.services); 
+        console.log(this.fullPrice);
+        console.log('appData.screenPrice', this.screenPrice);
+        console.log(this.servicePercentPrice);
+        console.log(this.screens);
+        console.log(this.services); 
     },
 
 };
