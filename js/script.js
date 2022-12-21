@@ -16,9 +16,9 @@ const totalCountOther = document.getElementsByClassName('total-input')[2];
 const fullTotalCount = document.getElementsByClassName('total-input')[3];
 const totalCountRollback = document.getElementsByClassName('total-input')[4];
 
-
 let buttonPlus = document.querySelector('.screen-btn');
 let screens = document.querySelectorAll('.screen');
+
 
 const appData = {
     title: '',
@@ -67,7 +67,6 @@ const appData = {
         buttonPlus = document.querySelector('.screen-btn');
         buttonPlus.addEventListener('click', this.addScreenBlock.bind(this));
 
-        // inputRange = document.querySelector('.rollback input');
         inputRange.addEventListener('input', this.setRollback.bind(this));
     },
 
@@ -143,19 +142,12 @@ const appData = {
         totalCount.value = this.countScreens;
     },
 
-    // Метод addNoneBlock добавляет none или block в свойство display
     addNoneBlock: function(btn1, btn2) {
         btn1.style.display = 'none';
         btn2.style.display = 'block';
     },
 
-    // Метод newSearchElements новый поиск элементов 
-    // newSearchElements: function() {
-    //     screens = document.querySelectorAll('.screen');
-    // },
-
     screenCheck: function() {
-        // this.newSearchElements();
         screens = document.querySelectorAll('.screen');
         
         screens.forEach(screen => {
@@ -168,7 +160,6 @@ const appData = {
     },
 
     addScreens: function() {
-        // this.newSearchElements();
         screens = document.querySelectorAll('.screen');
 
         screens.forEach((screen, index) => {
@@ -211,24 +202,18 @@ const appData = {
     },
 
     addScreenBlock: function() {
-        // this.newSearchElements();
         screens = document.querySelectorAll('.screen');
 
-        console.log('addScreenBlock');
         const cloneScreen = screens[0].cloneNode(true);
-
         screens[screens.length - 1].after(cloneScreen);
     },
 
     setRollback: function () {
-        // inputRange = document.querySelector('.rollback input');
-
         this.rollback = inputRange.value;
         inputRangeValue.textContent = inputRange.value + '%';
     },
 
     addPrices: function() {
-
         this.screens.forEach(item => {
             this.screenPrice += item.price;
             this.countScreens += item.count;
