@@ -3,6 +3,12 @@
 const title = document.getElementsByTagName('h1')[0];
 const otherItemsPercent = document.querySelectorAll('.other-items.percent');
 const otherItemsNumber = document.querySelectorAll('.other-items.number');
+const cms = document.querySelector('#cms-open');
+const cmsVariants = document.querySelector('.hidden-cms-variants');
+const cmsSelect = document.querySelector('#cms-select');
+const cmsOther = cmsVariants.querySelector('.main-controls__input');
+const cmsOtherInput = cmsVariants.querySelector('#cms-other-input');
+
 
 let inputRange = document.querySelector('.rollback input');
 let inputRangeValue = document.querySelector('.rollback .range-value');
@@ -33,14 +39,16 @@ const appData = {
     servicesPercent: {},
     servicesNumber: {},
     countScreens: 0,
+    cmsPercent: 0,
     isBlocked: true,
     
     init: function () {
         this.addTitle();
+        this.eventListener();
         startBtn.addEventListener('click', this.start.bind(this));
         resetBtn.addEventListener('click', this.reset.bind(this));
-        
-        this.eventListener();
+        cms.addEventListener('click', this.openCmsBlock.bind(this));
+        cmsSelect.addEventListener('click', this.cmsChange.bind(this));
     },
     
     addTitle: function () {
@@ -75,6 +83,7 @@ const appData = {
         this.resetForm();
         this.addNoneBlock(resetBtn, startBtn);
         this.eventListener();
+        this.cmsReset();
     },
 
     resetData: function() {
@@ -82,7 +91,6 @@ const appData = {
         this.screenPrice = 0, 
         this.adaptive = true,
         this.rollback = 10,
-        this.screenPrice = 0,
         this.servicePricesNumber = 0,
         this.fullPrice = 0,
         this.servicePercentPrice = 0,
@@ -146,6 +154,42 @@ const appData = {
         btn1.style.display = 'none';
         btn2.style.display = 'block';
     },
+
+    openCmsBlock: function() {
+        if(cms.checked) {
+            cmsVariants.style.display = 'flex';
+        } else {
+            this.cmsReset();
+        }
+    },
+
+    cmsReset: function () {
+        cmsVariants.style.display = 'none';
+        cmsSelect.disabled = false;
+        cmsSelect.selectedIndex = 0;
+        cmsOtherInput.disabled = false;
+        cmsOtherInput.value = 0;
+        this.cmsPercent = 0;
+      },
+
+    cmsChange: function () {
+        const value = cmsSelect.value;
+        if (value === 'other') {
+            
+          cmsOtherInput.addEventListener('input', () => {
+            this.cmsPercent = +cmsOtherInput.value;
+          });
+
+          cmsOther.style.display = 'flex';
+        } else {
+
+          cmsOther.style.display = 'none';
+          if (value) {
+            this.cmsPercent = +value;
+          }
+
+        }
+      },
 
     screenCheck: function() {
         screens = document.querySelectorAll('.screen');
@@ -228,6 +272,9 @@ const appData = {
         }
 
         this.fullPrice = +this.screenPrice + this.servicePricesNumber + this.servicePricesPercent;
+
+        this.fullPrice = (this.cmsPercent > 0) ? this.fullPrice + (this.fullPrice * (this.cmsPercent / 100)) 
+        : this.fullPrice;
 
         this.servicePercentPrice = this.fullPrice - (this.fullPrice * (this.rollback / 100));
     },
